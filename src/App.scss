@@ -1,0 +1,16 @@
+.main-nav {
+  margin-bottom: 24px;
+
+  ul {
+    list-style-type: none;
+
+    li {
+      font-size: 1.4rem;
+      padding: 8px 12px;
+      margin-bottom: 4px;
+      color: var(--text-black);
+      text-decoration: none;
+      background-color: rgb(218, 218, 218);
+    }
+  }
+}

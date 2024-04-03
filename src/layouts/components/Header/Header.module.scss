@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  font-size: 2rem;
+}
+
+.logo {
+  .logo-title {
+    font-weight: 600;
+  }
+}
+
+.home-title {
+  &.active {
+    font-weight: 500;
+    color: var(--primary);
+  }
+}
