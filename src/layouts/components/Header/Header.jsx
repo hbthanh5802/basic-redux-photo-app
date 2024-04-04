@@ -24,9 +24,9 @@ function Header() {
             cx('home-title', 'block', { active: isActive })
           }
           exact="true"
-          to={'/photo'}
+          to={'/sign-in'}
         >
-          <p>Redux Project</p>
+          <p>SignIn</p>
         </NavLink>
       </div>
     </div>

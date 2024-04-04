@@ -1,21 +1,29 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import NotFound from '@/components/NotFound';
-import MainPage from '@/features/Photo/pages/MainPage';
-import AddEditPage from '@/features/Photo/pages/AddEditPage';
 import SignInPage from '@/features/Auth/pages/SignIn';
 import Photo from '@/features/Photo';
+import AddEditPage from '@/features/Photo/pages/AddEditPage';
+import MainPage from '@/features/Photo/pages/MainPage';
 // import productApi from '@/api/productApi';
 
-import './App.scss';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import './App.scss';
+import { useEffect, useState } from 'react';
 
-// Lazy lode - Code splitting
-// const Photo = React.lazy(() => import('@/features/Photo'));
+// Configure Firebase.
+const config = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  // ...
+};
+firebase.initializeApp(config);
 
 function App() {
   const routePath = window.location.pathname;
+  const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
   // const [productList, setProductList] = useState([]);
 
   // useEffect(() => {
@@ -32,6 +40,24 @@ function App() {
   //   fetchProductList();
   // }, []);
 
+  // Listen to the Firebase Auth state and set the local state.
+  useEffect(() => {
+    const unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged(async (user) => {
+        // setIsSignedIn(!!user);
+        if (!user) {
+          console.log('User is not logged in');
+          return;
+        }
+        console.log('Logged in user: ', user.displayName);
+        const token = await user.getIdToken();
+        console.log('Token: ', token);
+      });
+
+    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="photo-app">
@@ -43,7 +69,7 @@ function App() {
               <Route path="add" element={<AddEditPage />} />
               <Route path=":photoId" element={<AddEditPage />} />
             </Route>
-            <Route path="/sign-in" Component={<SignInPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </DefaultLayout>
