@@ -51,9 +51,6 @@ function App() {
           console.log('User is not logged in');
           return;
         }
-        console.log('Logged in user: ', user.displayName);
-        const token = await user.getIdToken();
-        console.log('Token: ', token);
       });
 
     return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
