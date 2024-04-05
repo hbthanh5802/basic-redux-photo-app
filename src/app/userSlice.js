@@ -26,8 +26,8 @@ const userSlice = createAppSlice({
           state.loading = true;
         },
         rejected: (state, action) => {
-          (state.loading = false),
-            (state.error = action.payload ?? action.error);
+          state.loading = false;
+          state.error = action.payload ?? action.error;
         },
         fulfilled: (state, action) => {
           state.loading = false;
