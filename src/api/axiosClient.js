@@ -10,7 +10,6 @@ const getFirebaseToken = async () => {
   return new Promise((resolve, reject) => {
     const waitTimer = setTimeout(() => {
       reject(null);
-      console.log('Reject Timeout');
     }, 10000);
     const unregisterAuthObserver = firebase
       .auth()
@@ -20,7 +19,6 @@ const getFirebaseToken = async () => {
           reject(null);
         }
         const token = await user.getIdToken();
-        console.log('[Axios] Token: ', token);
         resolve(token);
         unregisterAuthObserver();
         clearTimeout(waitTimer);

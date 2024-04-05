@@ -13,6 +13,9 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import './App.scss';
 import { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { getMe } from '@/app/userSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 // Configure Firebase.
 const config = {
@@ -26,6 +29,7 @@ function App() {
   const routePath = window.location.pathname;
   // const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
   const [productList, setProductList] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductList = async () => {
@@ -50,6 +54,15 @@ function App() {
         if (!user) {
           console.log('User is not logged in');
           return;
+        }
+
+        try {
+          const actionResult = await dispatch(getMe());
+          const currentUser = unwrapResult(actionResult);
+          console.log('Logged in user', currentUser);
+        } catch (error) {
+          console.log('Failed to login ', error.message);
+          // Do something  with error
         }
       });
 
